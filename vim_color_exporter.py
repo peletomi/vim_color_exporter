@@ -3,10 +3,11 @@
 import re
 import os
 import argparse
+import tempfile
 
 from jinja2 import Environment, PackageLoader
 
-HI_RES = re.compile('^\s*hi\s+(\w+)')
+HI_RES = re.compile('^(\w+)')
 
 GUI_RES = [
         re.compile('guifg\s*=\s*(#[\da-f]+|none)', re.IGNORECASE),
@@ -29,7 +30,7 @@ def get_re_val(line, regexp):
         return ''
 
 
-def get_colors(vim_color_def):
+def get_colors(color_scheme):
     colors = {
             'normal':       ['e2e2e5', '202020', None],
             'cursorcolumn': [None,     '2d2d2d', None],
@@ -40,7 +41,26 @@ def get_colors(vim_color_def):
             'comment':      ['808080', None,     None],
             'visual':       ['faf4c6', '3c414c',     None],
     }
-    with open(vim_color_def, 'r') as f:
+
+    # Read the highlights from vim directly as some color schemes use functions to
+    # set the colors. The current settings are re-directed into a temp file and
+    # then read back.
+    (f_script, path_script) = tempfile.mkstemp()
+    (f_color, path_color) = tempfile.mkstemp()
+
+    script = """
+colorscheme %s
+redir! > %s
+hi
+redir END
+quit""" % (color_scheme, path_color)
+
+    with open(path_script, 'w') as f:
+        f.write(script)
+
+    os.system('vim -S %s' % path_script)
+
+    with open(path_color, 'r') as f:
         for line in f:
             name = get_re_val(line, HI_RES)
             if name:
@@ -51,6 +71,10 @@ def get_colors(vim_color_def):
                         raise Exception('not allowed color format [%s]'  % color_value)
                     values.append(color_value)
                 colors[name] = values
+
+    os.remove(path_script)
+    os.remove(path_color)
+
     return colors
 
 def fill_idea_template(colors, color_schema_name):
@@ -60,13 +84,13 @@ def fill_idea_template(colors, color_schema_name):
 
 def main():
     parser = argparse.ArgumentParser(description='Process some integers.')
-    parser.add_argument('color_file', metavar='C', help='vim color file to process')
+    parser.add_argument('color_scheme', metavar='C', help='vim color scheme to process')
     parser.add_argument('-icd', '--idea-config-dir', help='config directory for IntelliJ IDEA')
 
     args = parser.parse_args()
 
-    name = os.path.basename(args.color_file).replace('.vim', '')
-    colors = get_colors(args.color_file)
+    name = args.color_scheme
+    colors = get_colors(name)
 
     if args.idea_config_dir:
         idea_color_file = os.path.join(args.idea_config_dir, 'colors', name + '.xml')
