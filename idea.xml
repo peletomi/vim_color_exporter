@@ -11,7 +11,7 @@
     <option name="CARET_ROW_COLOR" value="{{ cursorline[0] }}" />
     <option name="CONSOLE_BACKGROUND_KEY" value="{{ normal[1] }}" />
     <option name="GUTTER_BACKGROUND" value="{{ normal[1] }}" />
-    <option name="INDENT_GUIDE" value="73642" />
+    <option name="INDENT_GUIDE" value="{{ cursorline[0] }}" />
     <option name="LINE_NUMBERS_COLOR" value="{{ linenr[0] }}" />
     <option name="METHOD_SEPARATORS_COLOR" value="{{ nontext[0] }}" />
     <option name="MODIFIED_LINES_COLOR" value="" />
@@ -28,8 +28,8 @@
   <attributes>
     <option name="ANNOTATION_NAME_ATTRIBUTES">
       <value>
-        <option name="FOREGROUND" value="859900" />
-        <option name="BACKGROUND" />
+        <option name="FOREGROUND" value="{{ special[0] }}" />
+        <option name="BACKGROUND" value="{{ special[1] }}" />
         <option name="FONT_TYPE" value="0" />
         <option name="EFFECT_COLOR" />
         <option name="EFFECT_TYPE" value="1" />
@@ -3000,7 +3000,7 @@
     </option>
     <option name="OVERLOADED_OPERATOR">
       <value>
-        <option name="FOREGROUND" value="859900" />
+        <option name="FOREGROUND" value="{{ operator[0] }}" />
         <option name="BACKGROUND" />
         <option name="FONT_TYPE" value="2" />
         <option name="EFFECT_COLOR" />
@@ -5000,7 +5000,7 @@
     </option>
     <option name="TYPEDEF">
       <value>
-        <option name="FOREGROUND" value="b38700" />
+        <option name="FOREGROUND" value="{{ preproc[0] }}" />
         <option name="BACKGROUND" />
         <option name="FONT_TYPE" value="0" />
         <option name="EFFECT_COLOR" />
@@ -5023,14 +5023,14 @@
         <option name="FOREGROUND" />
         <option name="BACKGROUND" />
         <option name="FONT_TYPE" value="0" />
-        <option name="EFFECT_COLOR" value="859900" />
+        <option name="EFFECT_COLOR" value="{{ error[0] }}" />
         <option name="EFFECT_TYPE" value="2" />
         <option name="ERROR_STRIPE_COLOR" />
       </value>
     </option>
     <option name="Template lazy val/var">
       <value>
-        <option name="FOREGROUND" value="2aa198" />
+        <option name="FOREGROUND" value="{{ preproc[0] }}" />
         <option name="BACKGROUND" />
         <option name="FONT_TYPE" value="0" />
         <option name="EFFECT_COLOR" />
@@ -5040,7 +5040,7 @@
     </option>
     <option name="Template val">
       <value>
-        <option name="FOREGROUND" value="2aa198" />
+        <option name="FOREGROUND" value="{{ preproc[0] }}" />
         <option name="BACKGROUND" />
         <option name="FONT_TYPE" value="0" />
         <option name="EFFECT_COLOR" />
@@ -5050,7 +5050,7 @@
     </option>
     <option name="Template var">
       <value>
-        <option name="FOREGROUND" value="2aa198" />
+        <option name="FOREGROUND" value="{{ preproc[0] }}" />
         <option name="BACKGROUND" />
         <option name="FONT_TYPE" value="2" />
         <option name="EFFECT_COLOR" />
@@ -5070,7 +5070,7 @@
     </option>
     <option name="Type Alias">
       <value>
-        <option name="FOREGROUND" value="2688d1" />
+        <option name="FOREGROUND" value="{{ preproc[0] }}" />
         <option name="BACKGROUND" />
         <option name="FONT_TYPE" value="0" />
         <option name="EFFECT_COLOR" />
@@ -5080,7 +5080,7 @@
     </option>
     <option name="Type parameter">
       <value>
-        <option name="FOREGROUND" value="2688d1" />
+        <option name="FOREGROUND" value="{{ preproc[0] }}" />
         <option name="BACKGROUND" />
         <option name="FONT_TYPE" value="0" />
         <option name="EFFECT_COLOR" />
