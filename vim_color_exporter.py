@@ -1,7 +1,6 @@
 #! env python2.7
 
 import re
-import sys
 import os
 import argparse
 
@@ -15,26 +14,42 @@ GUI_RES = [
         re.compile('gui\s*=\s*(\S+)', re.IGNORECASE)
 ]
 
+COLOR_RE = re.compile('[a-zA-Z\d]*')
+
+
 def get_re_val(line, regexp):
     m = regexp.search(line)
     if m:
         v = m.group(1).lower()
-        if v != 'none':
+        if v == 'none':
+            return ''
+        else:
             return v.replace('#', '')
     else:
         return ''
 
 
-
 def get_colors(vim_color_def):
-    colors = {}
+    colors = {
+            'normal':       ['e2e2e5', '202020', None],
+            'cursorcolumn': [None,     '2d2d2d', None],
+            'cursorline':   [None,     '2d2d2d', None],
+            'nontext':      ['808080', '303030', None],
+            'linenr':       ['808080', '000000', None],
+            'colorcolumn':  ['808080', None,     None],
+            'comment':      ['808080', None,     None],
+            'visual':       ['faf4c6', '3c414c',     None],
+    }
     with open(vim_color_def, 'r') as f:
         for line in f:
             name = get_re_val(line, HI_RES)
             if name:
                 values = []
                 for regexp in GUI_RES:
-                    values.append(get_re_val(line, regexp))
+                    color_value = get_re_val(line, regexp)
+                    if not COLOR_RE.search(color_value):
+                        raise Exception('not allowed color format [%s]'  % color_value)
+                    values.append(color_value)
                 colors[name] = values
     return colors
 
